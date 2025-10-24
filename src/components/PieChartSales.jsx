@@ -87,10 +87,31 @@ export default function PieChartSales({ isAnimationActive = true }) {
       </div>
             <div className="mt-2">
                 <h2 className="text-sm font-semibold">Top 3 mejores vendedores de CriptoCoins</h2>
-                <ol className="mt-2 list-decimal list-inside text-xs text-gray-700">
-                <li>Vendedor A — $45</li>
-                <li>Vendedor B — $30</li>
-                <li>Vendedor C — $25</li>
+                <ol className="mt-2 list-decimal list-inside text-xs text-gray-700 block -space-x-1 overflow-hidden">
+                <li className='flex m-auto w-5/12 p-2 text-center justify-between'>
+                    <p className='m-auto'>Tanjiro Kamado — $45</p>
+                    <img
+                    alt=""
+                    src="https://images.unsplash.com/photo-1491528323818-fdd1faba62cc?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=facearea&facepad=2&w=256&h=256&q=80"
+                    className="inline-block size-6 rounded-full ring-2 ring-gray-900 outline -outline-offset-1 outline-white/10 m-auto"
+                    />
+                </li>
+                <li className='flex m-auto w-5/12 p-2 text-center justify-between'>
+                    <p  className='m-auto'>Satoru Gojo — $30</p>
+                    <img
+                    alt=""
+                    src="https://images.unsplash.com/photo-1550525811-e5869dd03032?ixlib=rb-1.2.1&auto=format&fit=facearea&facepad=2&w=256&h=256&q=80"
+                    className="inline-block size-6 rounded-full ring-2 ring-gray-900 outline -outline-offset-1 outline-white/10 m-auto"
+                    />
+                </li>
+                <li className="flex m-auto w-5/12 p-2 text-center justify-between">
+                    <p className='m-auto'>Inosuke Hashibira — $25</p>
+                    <img
+                    alt=""
+                    src="https://images.unsplash.com/photo-1500648767791-00dcc994a43e?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=facearea&facepad=2.25&w=256&h=256&q=80"
+                    className="inline-block size-6 rounded-full ring-2 ring-gray-900 outline -outline-offset-1 outline-white/10 m-auto"
+                    />
+                    </li>
                 </ol>
             </div>
     </div>

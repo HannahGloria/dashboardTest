@@ -65,7 +65,7 @@ export default function SearchByName() {
                 <h2 className="text-2xl font-semibold ml-4 text-stone-900">¿Quieres ver más NFTs?</h2>
                 <input
                 className="p-2 w-6/12 max-w-6/12 rounded-2xl m-8 border-2 border-gray-500"
-                placeholder="Buscar NFT por nombre..."
+                placeholder="Escribe para buscar NFT por nombre..."
                 value={query}
                 onChange={(e) => setQuery(e.target.value)}
                 />
@@ -101,7 +101,7 @@ export default function SearchByName() {
                 )
             ) : (
                 <div className="text-gray-500 mb-4 pb-4">
-                {query.length === 0 ? "Escribe para buscar NFTs por nombre." : (query.length < minLength ? `Ingresa al menos ${minLength} caracteres para buscar.` : null)}
+                {query.length === 0 ? "Aún no has escrito nada" : (query.length < minLength ? `Ingresa al menos ${minLength} caracteres para buscar.` : null)}
                 </div>
             )}
             </div>
