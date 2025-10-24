@@ -6,20 +6,17 @@ export async function getTrendingNFTs() {
       "accept": "application/json",
       "X-API-Key": import.meta.env.VITE_MORALIS_API_KEY,
     },
-    // mode: "cors" // opcional, por defecto es "cors" en browsers
   });
 
   const status = response.status;
   const contentType = response.headers.get("content-type") || "";
 
-  // si no ok, devuelve el texto para depuración
   if (!response.ok) {
     const text = await response.text().catch(() => "");
     console.error("Moralis fetch error:", status, text);
     throw new Error(`Error al obtener NFTs: ${status}`);
   }
 
-  // intenta parsear según el content-type, con fallback a text y parseo seguro
   let rawText;
   try {
     if (contentType.includes("application/json")) {
@@ -31,16 +28,15 @@ export async function getTrendingNFTs() {
       console.warn("Estructura inesperada de JSON:", Object.keys(data));
       return [];
     } else {
-      // no es JSON según headers: leer texto para ver qué está devolviendo el servidor (HTML de error, login, etc.)
       rawText = await response.text();
-      console.warn("Respuesta no JSON de Moralis:", contentType, rawText.slice(0, 1000));
+      console.warn("Respuesta en formato que no es JSON:", contentType, rawText.slice(0, 1000));
       try {
         const parsed = JSON.parse(rawText);
         if (Array.isArray(parsed)) return parsed;
         if (Array.isArray(parsed.result)) return parsed.result;
         if (Array.isArray(parsed.data)) return parsed.data;
       } catch (e) {
-        // no es JSON válido
+        // Si no es un JSON válido
         return [];
       }
     }

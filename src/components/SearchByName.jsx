@@ -1,5 +1,5 @@
 import { useState, useEffect } from "react";
-import { getNfts, getTopNftsByPrice } from "../services/coingeckoAPI";
+import { getTrendingNFTs } from "../services/moralisService"; //mejor usare esta API
 
 export default function SearchByName() {
     const [query, setQuery] = useState("");
@@ -10,14 +10,13 @@ export default function SearchByName() {
     const minLength = 2;
     const txtSearch = query.trim().toLowerCase();
     const showResults = txtSearch.length >= minLength;
-
      const filtered = showResults
     ? list.filter(it => it.name && it.name.toLowerCase().includes(txtSearch))
     : [];
 
     const resolveImageUrl = (item) => {
-        const url = item?.image?.small || item?.image_url || item?.thumbnail || item?.image;
-        if (!url) return "/placeholder.png";
+        const url = item?.image || item?.raw?.collection_image || item?.image?.small || item?.image_url || item?.thumbnail;
+         if (!url) return "/placeholder.png";
         let final = url;
         if (final.startsWith("ipfs://")) {
             final = "https://ipfs.io/ipfs/" + final.replace("ipfs://", "");
@@ -33,13 +32,21 @@ export default function SearchByName() {
           setLoading(true);
           setError(null);
           try {
-            // pedir includeDetails = true para popular image (solo un sample pequeño en la función)
-            const items = await getNfts("", true);
-            console.log("getNfts() ->", items);
+            // Moralis devuelve colecciones 
+            const items = await getTrendingNFTs();
+            console.log("getTrendingNfts() ->", items); //Borrar después de debug
             if (Array.isArray(items)) {
-              setList(items);
+              // mapear de la forma que usa el componente
+              const mapped = items.map((it, idx) => ({
+                id: it.collection_address || it.id || `${it.collection_title}-${idx}`,
+                name: it.collection_title || it.name || "Sin título",
+                image: it.collection_image || it.thumbnail || it.image || null,
+                price: it.floor_price || it.floor_price_usd || it.floor_price_usd_24hr_percent_change || null,
+                raw: it,
+              }));
+              setList(mapped);
             } else {
-              console.error("getNfts no devolvió un array:", items);
+              console.error("getTrendingNfts no devolvió un array:", items);
               setList([]);
               setError("Respuesta inesperada de la API");
             }
@@ -55,19 +62,18 @@ export default function SearchByName() {
     return (
         <div>
             <div className="mb-1 flex items-center justify-between">
-                <h2 className="text-lg font-semibold ml-4">NFTs</h2>
+                <h2 className="text-2xl font-semibold ml-4 text-stone-900">¿Quieres ver más NFTs?</h2>
                 <input
+                className="p-2 w-6/12 max-w-6/12 rounded-2xl m-8 border-2 border-gray-500"
                 placeholder="Buscar NFT por nombre..."
                 value={query}
                 onChange={(e) => setQuery(e.target.value)}
-                className="p-2 w-3/12 max-w-3/12 rounded-2xl m-8"
                 />
             </div>
             
             {/* RESULTADOS */}
             <div className="mt-4 px-4">
-            <h3 className="text-md font-semibold mb-3">Resultados</h3>
-
+           
             {loading && <div className="text-gray-600">Cargando NFTs...</div>}
             {error && <div className="text-red-600">Error: {error}</div>}
 
@@ -94,7 +100,7 @@ export default function SearchByName() {
                 </div>
                 )
             ) : (
-                <div className="text-gray-500">
+                <div className="text-gray-500 mb-4 pb-4">
                 {query.length === 0 ? "Escribe para buscar NFTs por nombre." : (query.length < minLength ? `Ingresa al menos ${minLength} caracteres para buscar.` : null)}
                 </div>
             )}

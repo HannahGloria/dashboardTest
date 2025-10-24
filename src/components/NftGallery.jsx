@@ -8,7 +8,6 @@ export default function NftGallery() {
     async function fetchNFTs() {
       try {
         const data = await getTrendingNFTs();
-        console.log("raw trending data:", data); // loguea la respuesta real
         const list = Array.isArray(data) ? data.slice(0, 6) : [];
         setNfts(list); // actualizar estado con los 6 primeros
       } catch (error) {
@@ -24,18 +23,18 @@ export default function NftGallery() {
   }, [nfts]);
 
   return (
-    <div className="bg-white shadow-md rounded-lg p-4">
+    <div className="bg-white shadow-md rounded-lg p-4 max-w-4/5 m-auto">
       <h2 className="text-lg font-semibold mb-4 text-gray-700">NFTs en Tendencia</h2>
       <div className="grid sm:grid-cols-2 lg:grid-cols-6 gap-4">
         {nfts.map((nft, i) => (
           <div
             key={i}
-            className="rounded-xs border border-gray-200 p-3 hover:shadow-lg transition"
+            className="rounded-xs border border-gray-200 p-3 hover:shadow-lg transition bg-fuchsia-100"
           >
             <img
               src={nft.thumbnail || nft.image || nft.collection_image || "/placeholder.jpg"}
               alt={nft.name || nft.collection_title || `NFT ${i + 1}`}
-              className="rounded-lg w-full h-40 object-cover"
+              className="rounded-lg w-full h-20 object-contain"
             />
             <h3 className="text-md font-medium mt-2">
               {nft.collection_title || "Colección desconocida"}
