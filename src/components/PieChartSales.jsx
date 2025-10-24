@@ -53,9 +53,9 @@ export default function PieChartSales({ isAnimationActive = true }) {
       <h3 className=" mb-2 font-medium text-xs text-gray-600">Realizadas por Cryptocoins</h3>
 
       <div className="flex flex-col md:flex-row items-center md:items-stretch gap-4">
-        <div className="w-full md:w-1/2 flex items-center justify-center">
+        <div className="w-full lg:w-1/2 md:w-full flex items-center justify-center h-30 md:h-30">
             <ResponsiveContainer width="100%" height="100%">
-                <PieChart className=' w-6/12'>
+                <PieChart className='w-full'>
                     <Pie
                     dataKey="value"
                     startAngle={180}
@@ -72,7 +72,7 @@ export default function PieChartSales({ isAnimationActive = true }) {
                 </PieChart>
             </ResponsiveContainer>
         </div>
-        <div className="w-full md:w-1/2 flex flex-col justify-center p-3">
+        <div className="w-full lg:w-1/2 md:w-full flex flex-col justify-center p-3 h-30 md:h-30">
             <div className="flex flex-col items-start">
                 <div className="text-sm font-semibold text-gray-800">{chartData[0].name}</div>
                 <div className="text-xs text-gray-600 mb-3">${value} · {percent}%</div>
