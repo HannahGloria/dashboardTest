@@ -40,42 +40,59 @@ export default function PieChartSales({ isAnimationActive = true }) {
   const iR = 50;
   const oR = 100;
   const value = chartData[0].value;
+  const value2 = chartData[1].value;
+  const value3 = chartData[2].value;
   const total = chartData.reduce((s, v) => s + v.value, 0);
   const percent = Math.round((value / total) * 100);
+  const percent2 = Math.round((value2 / total) * 100);
+  const percent3 = Math.round((value3 / total) * 100);
 
   return (
-    <div className="w-full max-w-[515px] mx-auto bg-white shadow rounded-lg p-3">
+    <div className="w-full  mx-auto bg-white shadow rounded-lg p-3">
       <div className="text-lg font-semibold mb-1 text-gray-700">Ventas de NFTs y Criptomonedas</div>
       <h3 className=" mb-2 font-medium text-xs text-gray-600">Realizadas por Cryptocoins</h3>
 
-      {/* indicador central que muestra que lo más vendido son Criptomonedas */}
-      <div className="inset-0 flex flex-col items-center justify-center pointer-events-none">
-        <div className="text-sm font-semibold text-gray-800">{chartData[0].name}</div>
-        <div className="text-xs text-gray-600">${value} · {percent}%</div>
-        {/* El resto de ventas */}
-        <p className='text-sm font-semibold text-gray-800'>NFTs</p>
-        <p className='text-sm font-semibold text-gray-800'>Divisas</p>
+      <div className="flex flex-col md:flex-row items-center md:items-stretch gap-4">
+        <div className="w-full md:w-1/2 flex items-center justify-center">
+            <ResponsiveContainer width="100%" height="100%">
+                <PieChart className=' w-6/12'>
+                    <Pie
+                    dataKey="value"
+                    startAngle={180}
+                    endAngle={0}
+                    data={chartData}
+                    cx={cx}
+                    cy={cy}
+                    innerRadius={iR}
+                    outerRadius={oR}
+                    stroke="none"
+                    isAnimationActive={isAnimationActive}
+                    />
+                    {needle({ value, data: chartData, cx, cy, iR, oR, color: chartData[0].fill })}
+                </PieChart>
+            </ResponsiveContainer>
+        </div>
+        <div className="w-full md:w-1/2 flex flex-col justify-center p-3">
+            <div className="flex flex-col items-start">
+                <div className="text-sm font-semibold text-gray-800">{chartData[0].name}</div>
+                <div className="text-xs text-gray-600 mb-3">${value} · {percent}%</div>
+
+                <div className="text-sm font-semibold text-gray-800">NFTs</div>
+                <div className="text-xs text-gray-600 mb-2">${value2} · {percent2}%</div>
+
+                <div className="text-sm font-semibold text-gray-800">Divisas</div>
+                <div className="text-xs text-gray-600 mb-4">${value3} · {percent3}%</div>
+            </div>
+        </div>
       </div>
-      
-      <div className="w-full h-[120px]">
-        <ResponsiveContainer width="100%" height="100%">
-          <PieChart>
-            <Pie
-              dataKey="value"
-              startAngle={180}
-              endAngle={0}
-              data={chartData}
-              cx={cx}
-              cy={cy}
-              innerRadius={iR}
-              outerRadius={oR}
-              stroke="none"
-              isAnimationActive={isAnimationActive}
-            />
-            {needle({ value, data: chartData, cx, cy, iR, oR, color: chartData[0].fill })}
-          </PieChart>
-        </ResponsiveContainer>
-      </div>
+            <div className="mt-2">
+                <h2 className="text-sm font-semibold">Top 3 mejores vendedores de CriptoCoins</h2>
+                <ol className="mt-2 list-decimal list-inside text-xs text-gray-700">
+                <li>Vendedor A — $45</li>
+                <li>Vendedor B — $30</li>
+                <li>Vendedor C — $25</li>
+                </ol>
+            </div>
     </div>
   );
 }
